@@ -1,0 +1,618 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+  - docassemble.ALMassachusetts:al_massachusetts.yml
+---
+metadata:
+  title: |
+    File a Business Certificate for the City of Cambridge
+  short title: |
+    Business Certificate Form
+  tags:
+    - Other
+  authors:
+    - Ryan Ditcham
+---
+mandatory: True
+comment: |
+  Global interview metadata
+variable name: interview_metadata["business_certificate_form"]
+data:
+  al_weaver_version: "1.7.0"
+  generated on: "2022-11-07"
+  title: >-
+    File a Business Certificate for the City of Cambridge
+  short title: >-
+    Business Certificate Form
+  description: |-
+    Get help filling out your Business Certificate form and instructions on next steps to take.
+  original_form: >-
+    https://www.cambridgema.gov/-/media/Files/cityclerksoffice/fillableforms/businesscertificateform.pdf
+  allowed courts: 
+    - "Boston Municipal Court"
+  categories:
+    - "Business Formation"
+  typical role: "na"
+  generate download screen: True
+---
+code: |
+  interview_metadata['main_interview_key'] =  'business_certificate_form'
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "MA"
+---
+code: |
+  github_repo_name =  'docassemble-BusinessCertificateForm'
+---
+code: |
+  interview_short_title = "File a Business Certificate Form for the City of Cambridge"
+---
+code: |
+  al_form_type = "other" 
+---
+objects:
+  - emergency: ALPeopleList.using(there_are_any=True)
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+sections:
+  - review_business_certificate_form: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_business_certificate_form
+code: |
+  # Set the allowed courts for this interview
+  allowed_courts = interview_metadata["business_certificate_form"]["allowed courts"]
+  nav.set_section("review_business_certificate_form")
+  user_role = "na"
+  new_business_yes
+  business1_dba_name
+  business1_conducted_at
+  business1_type1
+  business1_phone_number1
+  set_progress(9)
+  users.gather()
+  set_parts(subtitle=str(users))
+  users[0].address.address
+  users[1].address.address
+  set_progress(18)
+  users[2].address.address
+  signature_date
+  signature_address_county
+  set_progress(27)
+  business1_name1
+  business1_address_on_one_line
+  business1_phone_number
+  business1_security_question
+  set_progress(36)
+  emergency.gather()
+  emergency[0].address.address
+  emergency[0].phone_number
+  set_progress(45)
+  emergency[0].email
+  emergency[1].address.address
+  set_progress(54)
+  emergency[1].phone_number
+  emergency[1].email
+  emergency[2].address.address
+  set_progress(63)
+  emergency[2].phone_number
+  emergency[2].email
+  users4_date
+  set_progress(72)
+  wbe_yes
+  mbe_yes
+  set_progress(81)
+  vendor_register
+  newsletter_email
+  interview_order_business_certificate_form = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  business_certificate_form_intro
+  interview_order_business_certificate_form
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  business_certificate_form_download
+---
+comment: |
+  This question is used to introduce your interview. Please customize
+id: File_a_Business_Certificate_for_the_City_of_Cambridge
+continue button field: business_certificate_form_intro
+question: |
+  File a Business Certificate for the City of Cambridge
+subquestion: |
+  This interview will help you fill out a Business Certificate for the City of Cambridge. Make sure that you have the following information handy:
+  - The name your business will be "Doing Business As."
+  - The address, phone number and email information for your business.
+  - Name and contact information for emergency contacts.
+---
+id: New Business or Business Renewal
+question: |
+  New Business or Business Renewal
+subquestion: |
+  Are you filing this form to certify a new business or to renew and existing business certificate?
+fields:
+  - "New business": new_business_yes
+    datatype: yesnoradio
+  - "Business renewal": business_renewal_yes
+    datatype: yesnoradio
+---
+id: Doing Business As Name
+question: |
+  "Doing Business As" Name
+subquestion: |
+  What name will your business be "Doing Business As?" 
+  (A "Doing Business As" name is a name that businesses can operate under that is different from their true business name.)
+fields:
+  - "Business DBA name": business1_dba_name
+    maxlength: 45
+---
+id: Business Conducted At
+question: |
+  Business Conducted At
+subquestion: |
+  Where will your business be conducting its business?
+fields:
+  - "Business conducted at": business1_conducted_at
+    maxlength: 47
+---
+id: Business Type
+question: |
+  Business Type
+subquestion: |
+  What type of business is this?
+fields:
+  - "Business type": business1_type1
+    maxlength: 24
+---
+id: Business Phone Number and ZIP Code
+question: |
+  Business Phone Number and ZIP Code
+subquestion: |
+  What is the phone number for the business? What is the ZIP code for the business?
+fields:
+  - "Business phone number": business1_phone_number1
+    maxlength: 24
+  - "Business zip code": business1_address_zip
+    maxlength: 6
+---
+id: Signature County
+question: |
+  Signature County
+subquestion: |
+  In which county was this form signed?
+fields:
+  - "Signature county": signature_address_county
+    maxlength: 31
+---
+id: True Business Name
+question: |
+  True Business Name
+subquestion: |
+  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
+fields:
+  - "Business name": business1_name1
+    maxlength: 57
+---
+id: Business Address
+question: |
+  Business Address
+subquestion: |
+  What is the address of the business?
+fields:
+  - "Business address": business1_address_on_one_line
+    maxlength: 58
+---
+id: Business Contact Information
+question: |
+  Business Contact Information
+subquestion: |
+  What is the phone number for the business? What is the email address for the business?
+fields:
+  - "Business phone number": business1_phone_number
+    maxlength: 27
+  - "Business email": business1_email
+    datatype: email
+    maxlength: 30
+---
+id: Business Type
+question: |
+  Business Type
+subquestion: |
+  What type of business is this?
+fields:
+  - "Business type": business1_type2
+    maxlength: 55
+---
+id: Security Question
+question: |
+  Security Question
+subquestion: |
+  What did you want to be when you grew up?
+fields:
+  - "Business security question": business1_security_question
+    maxlength: 26
+---
+id: Date of Signature of Person Filling Form Out
+question: |
+  Date of Signature of Person Filling Form Out
+subquestion: |
+  What is the date that the person filling out this form signed on?
+fields:
+  - "Date of signature": users4_date
+    datatype: date
+---
+id: True Business Name
+question: |
+  True Business Name
+subquestion: |
+  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
+fields:
+  - "Business name": business1_name2
+    maxlength: 62
+---
+id: Business Address
+question: |
+  Business Address
+subquestion: |
+  What is the address of the business?
+fields:
+  - "Business address line one": business1_address_line_one
+    maxlength: 62
+  - "Business address line two": business1_address_line_two
+    maxlength: 62
+---
+id: True Business Name
+question: |
+  True Business Name
+subquestion: |
+  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
+fields:
+  - "Business name": business1_name3
+    maxlength: 25
+---
+id: Women s Business Enterprise
+question: |
+  Women's Business Enterprise
+subquestion: |
+  Is this business a Women's Business Enterprise?
+fields:
+  - "Women's business enterprise": wbe_yes
+    datatype: yesnoradio
+---
+id: Minority Business Enterprise
+question: |
+  Minority Business Enterprise
+subquestion: |
+  Is this business a Minority Business Enterprise?
+fields:
+  - "Minority business enterprise": mbe_yes
+    datatype: yesnoradio
+---
+id: Register to Become a Vendor
+question: |
+  Register to Become a Vendor
+subquestion: |
+  Would you like to register this business as a vendor in the City of Cambridge?
+fields:
+  - "Vendor register": vendor_register
+    datatype: yesnoradio
+---
+id: Economic Development Division Newsletter
+question: |
+  Economic Development Division Newsletter
+subquestion: |
+  Would you like to sign up your business to receive the Economic Development Division Newsletter?
+fields:
+  - "Newsletter email": newsletter_email
+    datatype: yesnoradio
+---
+id: preview business_certificate_form
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_court_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Edit answers" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_business_certificate_form'), label='Edit answers', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: business_certificate_form_preview_question    
+---
+code: |
+  signature_fields = ['users[0].signature', 'users[1].signature', 'users[2].signature']
+---
+code: |
+  # This is a placeholder for the addresses that will be searched
+  # for matching address to court. Edit if court venue is based on 
+  # a different address than the user's
+  addresses_to_search = [user.address for user in users]
+---
+id: business certificate form review screen
+event: review_business_certificate_form
+question: |
+  Review your answers
+review:
+  - Edit: new_business_yes
+    button: |
+      **New business**:
+      ${ new_business_yes }
+  - Edit: business_renewal_yes
+    button: |
+      **Business renewal**:
+      ${ business_renewal_yes }
+  - Edit: business1_dba_name
+    button: |
+      **Business DBA name**:
+      ${ business1_dba_name }
+  - Edit: business1_conducted_at
+    button: |
+      **Business conducted at**:
+      ${ business1_conducted_at }
+  - Edit: business1_phone_number1
+    button: |
+      **Business phone number**:
+      ${ business1_phone_number1 }
+  - Edit: business1_type1
+    button: |
+      **Business type**:
+      ${ business1_type1 }
+  - Edit: business1_address_zip
+    button: |
+      **Business zip code**:
+      ${ business1_address_zip }
+  - Edit: users.revisit
+    button: |
+      **Users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: signature_date
+    button: |
+      **Date of signature**:
+      ${ signature_date }
+  - Edit: signature_address_county
+    button: |
+      **Signature county**:
+      ${ signature_address_county }
+  - Edit: business1_name1
+    button: |
+      **Business name**:
+      ${ business1_name1 }
+  - Edit: business1_address_on_one_line
+    button: |
+      **Business address**:
+      ${ business1_address_on_one_line }
+  - Edit: business1_phone_number
+    button: |
+      **Business phone number**:
+      ${ business1_phone_number }
+  - Edit: business1_email
+    button: |
+      **Business email**:
+      ${ business1_email }
+  - Edit: business1_type2
+    button: |
+      **Business type**:
+      ${ business1_type2 }
+  - Edit: business1_security_question
+    button: |
+      **Business security question**:
+      ${ business1_security_question }
+  - Edit: emergency.revisit
+    button: |
+      **Emergency**
+
+      % for item in emergency:
+        * ${ item }
+      % endfor
+  - Edit: users4_date
+    button: |
+      **Date of signature**:
+      ${ users4_date }
+  - Edit: business1_name2
+    button: |
+      **Business name**:
+      ${ business1_name2 }
+  - Edit: business1_address_line_one
+    button: |
+      **Business address line one**:
+      ${ business1_address_line_one }
+  - Edit: business1_address_line_two
+    button: |
+      **Business address line two**:
+      ${ business1_address_line_two }
+  - Edit: business1_name3
+    button: |
+      **Business name**:
+      ${ business1_name3 }
+  - Edit: wbe_yes
+    button: |
+      **Women's business enterprise**:
+      ${ wbe_yes }
+  - Edit: mbe_yes
+    button: |
+      **Minority business enterprise**:
+      ${ mbe_yes }
+  - Edit: vendor_register
+    button: |
+      **Vendor register**:
+      ${ vendor_register }
+  - Edit: newsletter_email
+    button: |
+      **Newsletter email**:
+      ${ newsletter_email }
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit:
+  - address.address
+  - name.first
+  - signature
+confirm: True
+
+---
+continue button field: emergency.revisit
+question: |
+  Edit emergency
+subquestion: |
+  ${ emergency.table }
+
+  ${ emergency.add_action() }
+---
+table: emergency.table
+rows: emergency
+columns:
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+  - Email: |
+      row_item.email if defined("row_item.email") else ""
+edit:
+  - name.first
+  - address.address
+  - phone_number
+  - email
+confirm: True
+
+---
+id: download business_certificate_form
+event: business_certificate_form_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_business_certificate_form'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - business_certificate_form_Post_interview_instructions: ALDocument.using(title="Instructions", filename="business_certificate_form_next_steps.docx", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+  - business_certificate_form_attachment: ALDocument.using(title="File a Business Certificate for the City of Cambridge", filename="business_certificate_form", enabled=True, has_addendum=False, default_overflow_message=AL_DEFAULT_OVERFLOW_MESSAGE)
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[business_certificate_form_Post_interview_instructions, business_certificate_form_attachment], filename="business_certificate_form", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[business_certificate_form_attachment],  filename="business_certificate_form", title="All forms to deliver to court", enabled=True)
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the same template is 
+# used for "preview" and "final" keys, and logic in the template checks the value of 
+# `i` to show or hide the user's signature
+attachments:
+  - name: Post-interview-Instructions
+    filename: business_certificate_form_next_steps
+    docx template file: business_certificate_form_next_steps.docx
+    variable name: business_certificate_form_Post_interview_instructions[i]
+  - name: business certificate form
+    filename: business_certificate_form
+    variable name: business_certificate_form_attachment[i]
+    skip undefined: True
+    pdf template file: business_certificate_form.pdf
+    fields:
+      - "new_business_yes": ${ new_business_yes }
+      - "business_renewal_yes": ${ business_renewal_yes }
+      - "business1_dba_name": ${ business1_dba_name }
+      - "business1_conducted_at": ${ business1_conducted_at }
+      - "business1_phone_number1": ${ business1_phone_number1 }
+      - "business1_type1": ${ business1_type1 }
+      - "business1_address_zip": ${ business1_address_zip }
+      - "users1_address_on_one_line": ${ users[0].address.on_one_line() }
+      - "users1_name_full": ${ users[0] }
+      - "users2_name_full": ${ users[1] }
+      - "users2_address_on_one_line": ${ users[1].address.on_one_line() }
+      - "users3_name_full": ${ users[2] }
+      - "users3_address_on_one_line": ${ users[2].address.on_one_line() }
+      - "users1_signature": ${ users[0].signature_if_final(i) }
+      - "signature_date": ${ signature_date }
+      - "signature_address_county": ${ signature_address_county }
+      - "users2_signature": ${ users[1].signature_if_final(i) }
+      - "users3_signature": ${ users[2].signature_if_final(i) }
+      - "business1_name1": ${ business1_name1 }
+      - "business1_address_on_one_line": ${ business1_address_on_one_line }
+      - "business1_phone_number": ${ business1_phone_number }
+      - "business1_email": ${ business1_email }
+      - "business1_type2": ${ business1_type2 }
+      - "business1_security_question": ${ business1_security_question }
+      - "emergency1_name_first": ${ emergency[0].name.first }
+      - "emergency1_name_last": ${ emergency[0].name.last }
+      - "emergency1_address_line_one": ${ emergency[0].address.line_one() }
+      - "emergency1_address_city": ${ emergency[0].address.city }
+      - "emergency1_phone_number": ${ emergency[0].phone_number }
+      - "emergency1_email": ${ emergency[0].email }
+      - "emergency2_name_last": ${ emergency[1].name.last }
+      - "emergency2_name_first": ${ emergency[1].name.first }
+      - "emergency2_address_line_one": ${ emergency[1].address.line_one() }
+      - "emergency2_address_city": ${ emergency[1].address.city }
+      - "emergency2_phone_number": ${ emergency[1].phone_number }
+      - "emergency2_email": ${ emergency[1].email }
+      - "emergency3_name_last": ${ emergency[2].name.last }
+      - "emergency3_name_first": ${ emergency[2].name.first }
+      - "emergency3_address_city": ${ emergency[2].address.city }
+      - "emergency3_address_line_one": ${ emergency[2].address.line_one() }
+      - "emergency3_phone_number": ${ emergency[2].phone_number }
+      - "emergency3_email": ${ emergency[2].email }
+      - "users4_name_full": ${ users[3] }
+      - "users4_date": ${ users4_date.format() }
+      - "business1_name2": ${ business1_name2 }
+      - "business1_address_line_one": ${ business1_address_line_one }
+      - "business1_address_line_two": ${ business1_address_line_two }
+      - "business1_name3": ${ business1_name3 }
+      - "wbe_yes": ${ wbe_yes }
+      - "mbe_yes": ${ mbe_yes }
+      - "vendor_register_yes": ${ vendor_register }
+      - "vendor_register_no": ${ not vendor_register }
+      - "newsletter_email": ${ newsletter_email }
+
+
