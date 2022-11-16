@@ -71,18 +71,20 @@ code: |
   allowed_courts = interview_metadata["business_certificate_form"]["allowed courts"]
   nav.set_section("review_business_certificate_form")
   user_role = "na"
-  users4_name_full
+  users[3].name.first
   new_business_yes
   business1_dba_name
   business1_type1
   business1_conducted_at
   business1_phone_number1
   set_progress(9)
-  set_parts(subtitle=str(users))
+  users[0].name.first
   users[0].address.address
+  users[1].name.first
   users[1].address.address
-  set_progress(18)
+  users[2].name.first
   users[2].address.address
+  set_progress(18)
   signature_date
   signature_address_county
   set_progress(27)
@@ -91,19 +93,6 @@ code: |
   business1_phone_number
   business1_security_question
   set_progress(36)
-  emergency.gather()
-  emergency[0].address.address
-  emergency[0].phone_number
-  set_progress(45)
-  emergency[0].email
-  emergency[1].address.address
-  set_progress(54)
-  emergency[1].phone_number
-  emergency[1].email
-  emergency[2].address.address
-  set_progress(63)
-  emergency[2].phone_number
-  emergency[2].email
   set_progress(72)
   wbe_yes
   mbe_yes
@@ -154,7 +143,10 @@ question: |
 subquestion: |
   What is the full name of the person filling out this form and today's date?
 fields:
-  - "Full Name": users4_name_full
+  - "First Name": users[3].name.first
+  - "Middle Name": users[3].name.middle
+    required: False
+  - "Last Name": users[3].name.last
   - Today's Date: users4_date
     datatype: date
 ---
@@ -206,6 +198,78 @@ subquestion: |
 fields:
   - "Business phone number": business1_phone_number1
     maxlength: 24
+---
+id: First Attesting Individual Name
+question: |
+  First Attesting Individual's Name
+subquestion: |
+  You will need three individuals to attest to the accuracy of the information previously given. What is the full name of the first person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+fields:
+  - "First Name": users[0].name.first
+  - "Middle Name": users[0].name.middle
+    required: False
+  - "Last Name": users[0].name.last
+---
+id: First Attesting Individual Address
+question: |
+  First Attesting Individual's Address
+subquestion: |
+  What is the full address of the first attesting individual?
+fields:
+  - "Street Address": users[0].address.address
+  - "Apartment": users[0].address.unit
+    required: False
+  - "City": users[0].address.city
+  - "State": users[0].address.state
+  - "Zip Code": users[0].address.zip
+---
+id: Second Attesting Individual Name
+question: |
+  Second Attesting Individual's Name
+subquestion: |
+  What is the full name of the second person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+fields:
+  - "First Name": users[1].name.first
+  - "Middle Name": users[1].name.middle
+    required: False
+  - "Last Name": users[1].name.last
+---
+id: Second Attesting Individual Address
+question: |
+  Second Attesting Individual's Address
+subquestion: |
+  What is the full address of the second attesting individual?
+fields:
+  - "Street Address": users[1].address.address
+  - "Apartment": users[1].address.unit
+    required: False
+  - "City": users[1].address.city
+  - "State": users[1].address.state
+  - "Zip Code": users[1].address.zip
+---
+id: Third Attesting Individual Name
+question: |
+  Third Attesting Individual's Name
+subquestion: |
+  What is the full name of the third person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+fields:
+  - "First Name": users[2].name.first
+  - "Middle Name": users[2].name.middle
+    required: False
+  - "Last Name": users[2].name.last
+---
+id: Third Attesting Individual Address
+question: |
+  Third Attesting Individual's Address
+subquestion: |
+  What is the full address of the third attesting individual?
+fields:
+  - "Street Address": users[2].address.address
+  - "Apartment": users[2].address.unit
+    required: False
+  - "City": users[2].address.city
+  - "State": users[2].address.state
+  - "Zip Code": users[2].address.zip
 ---
 id: Signature County
 question: |
