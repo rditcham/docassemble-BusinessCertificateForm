@@ -71,13 +71,13 @@ code: |
   allowed_courts = interview_metadata["business_certificate_form"]["allowed courts"]
   nav.set_section("review_business_certificate_form")
   user_role = "na"
+  users4_name_full
   new_business_yes
   business1_dba_name
-  business1_conducted_at
   business1_type1
+  business1_conducted_at
   business1_phone_number1
   set_progress(9)
-  users.gather()
   set_parts(subtitle=str(users))
   users[0].address.address
   users[1].address.address
@@ -104,7 +104,6 @@ code: |
   set_progress(63)
   emergency[2].phone_number
   emergency[2].email
-  users4_date
   set_progress(72)
   wbe_yes
   mbe_yes
@@ -112,6 +111,10 @@ code: |
   vendor_register
   newsletter_email
   interview_order_business_certificate_form = True
+---
+code: |
+  if new_business_yes == False:
+    business_renewal_yes = True
 ---
 ###################### Main order ######################
 comment: |
@@ -145,16 +148,25 @@ subquestion: |
   - The address, phone number and email information for your business.
   - Name and contact information for emergency contacts.
 ---
+id: Name of Person Filling Form
+question: |
+  Name of Person Filling out this Form and Date
+subquestion: |
+  What is the full name of the person filling out this form and today's date?
+fields:
+  - "Full Name": users4_name_full
+  - Today's Date: users4_date
+    datatype: date
+---
 id: New Business or Business Renewal
 question: |
   New Business or Business Renewal
 subquestion: |
   Are you filing this form to certify a new business or to renew and existing business certificate?
-fields:
-  - "New business": new_business_yes
-    datatype: yesnoradio
-  - "Business renewal": business_renewal_yes
-    datatype: yesnoradio
+field: new_business_yes
+buttons:
+  - "New Business": True
+  - "Renewing Business": False
 ---
 id: Doing Business As Name
 question: |
@@ -166,14 +178,16 @@ fields:
   - "Business DBA name": business1_dba_name
     maxlength: 45
 ---
-id: Business Conducted At
+id: Address and ZIP Code
 question: |
-  Business Conducted At
+  Address and ZIP Code of Business
 subquestion: |
-  Where will your business be conducting its business?
+  What is the address and ZIP code of the business's physical location?
 fields:
   - "Business conducted at": business1_conducted_at
     maxlength: 47
+  - "Business ZIP Code": business1_address_zip
+    maxlength: 10
 ---
 id: Business Type
 question: |
@@ -184,16 +198,14 @@ fields:
   - "Business type": business1_type1
     maxlength: 24
 ---
-id: Business Phone Number and ZIP Code
+id: Business Phone Number
 question: |
-  Business Phone Number and ZIP Code
+  Business Phone Number
 subquestion: |
-  What is the phone number for the business? What is the ZIP code for the business?
+  What is the phone number for the business?
 fields:
   - "Business phone number": business1_phone_number1
     maxlength: 24
-  - "Business zip code": business1_address_zip
-    maxlength: 6
 ---
 id: Signature County
 question: |
