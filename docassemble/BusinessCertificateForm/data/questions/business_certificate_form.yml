@@ -73,6 +73,10 @@ code: |
   user_role = "na"
   users[3].name.first
   new_business_yes
+  if new_business_yes == False:
+    business_renewal_yes
+    if business_renewal_yes == False:
+      exit_or_restart
   business1_dba_name
   business1_type1
   business1_conducted_at
@@ -117,9 +121,9 @@ code: |
   newsletter_yes
   interview_order_business_certificate_form = True
 ---
-code: |
-  if new_business_yes == False:
-    business_renewal_yes = True
+#code: |
+#  if new_business_yes == False:
+#    business_renewal_yes = True
 ---
 code: |
   if users_signing == False:
@@ -186,15 +190,28 @@ fields:
     required: False
   - "Last Name": users[3].name.last
 ---
-id: New Business or Business Renewal
+id: New Business
 question: |
-  New Business or Business Renewal
+  New Business?
 subquestion: |
-  Are you filing this form to certify a new business or to renew and existing business certificate?
-field: new_business_yes
+  Are you filing this form to certify a new business?
+yesno: new_business_yes
+---
+id: Business Renewal
+question: |
+  Business Renewal?
+subquestion: |
+  Are you filing this form to renew an existing business?
+yesno: business_renewal_yes
+---
+id: Exit or Restart
+question: |
+  You must be filing either to certify a new business or to renew an existing business certification.
+sets: exit_or_restart
 buttons:
-  - "New Business": True
-  - "Renewing Business": False
+  - Exit: exit
+  - Restart: restart
+mandatory: True
 ---
 id: Doing Business As Name
 question: |
@@ -320,7 +337,7 @@ subquestion: |
 fields:
   - "Signature county": signature_address_county
     maxlength: 31
-  - Today's Date: users4_date
+  - Today's Date: users_date
     datatype: date
 ---
 id: True Business Name
