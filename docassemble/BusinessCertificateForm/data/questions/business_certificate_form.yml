@@ -98,6 +98,9 @@ code: |
   business1_phone_number
   business1_security_question
   set_progress(36)
+  emergency[0].name.first
+  emergency[0].address.address
+  emergency[0].phone_number
   set_progress(72)
   wbe_yes
   mbe_yes
@@ -343,6 +346,37 @@ subquestion: |
 fields:
   - "Business security question": business1_security_question
     maxlength: 26
+---
+id: Emergency Contact 1 Name
+question: |
+  Emergency Contact 1 Information
+subquestion: |
+  You must include contact information for at least two emergency contacts to be kept confidential in the Emergency Communications Center and only used for notification purposes by the Emergency Communications Department and/or Police or Fire personnel. What is the first and last name of the first emergency contact? 
+fields:
+  - "First Name": emergency[0].name.first
+  - "Last Name": emergency[0].name.last
+---
+id: Emergency Contact 1 Address
+question: |
+  Emergency Contact 1 Address
+subquestion: |
+  What is the address for the first emergency contact?
+fields:
+  - "Street Address": emergency[0].address.address
+  - "Apartment": emergency[0].address.unit
+    required: False
+  - "City": emergency[0].address.city
+  - "State": emergency[0].address.state
+  - "Zip Code": emergency[0].address.zip
+---
+id: Emergency Contact 1 Phone Number and Email Address
+question: |
+  Emergency Contact 1 Phone Number and Email Address
+subquestion: |
+  What is the phone number and email address for the first emergency contact?
+fields:
+  - "Phone Number": emergency[0].phone_number
+  - "Email Address": emergency[0].email
 ---
 id: Date of Signature of Person Filling Form Out
 question: |
