@@ -85,8 +85,13 @@ code: |
   users[2].name.first
   users[2].address.address
   set_progress(18)
-  signature_date
-  signature_address_county
+  users_signing
+  if users_signing == True:
+    users[0].signature
+    users[1].signature
+    users[2].signature
+    signature_date
+    signature_address_county
   set_progress(27)
   business1_name1
   business1_address_on_one_line
@@ -104,6 +109,12 @@ code: |
 code: |
   if new_business_yes == False:
     business_renewal_yes = True
+---
+code: |
+  if users_signing == False:
+    users[0].signature = ""
+    users[1].signature = ""
+    users[2].signature = ""
 ---
 ###################### Main order ######################
 comment: |
@@ -147,8 +158,6 @@ fields:
   - "Middle Name": users[3].name.middle
     required: False
   - "Last Name": users[3].name.last
-  - Today's Date: users4_date
-    datatype: date
 ---
 id: New Business or Business Renewal
 question: |
@@ -271,14 +280,21 @@ fields:
   - "State": users[2].address.state
   - "Zip Code": users[2].address.zip
 ---
+id: Attesting Individuals Signing Now
+question: |
+  Will all three of the attesting individuals be signing this form right now?
+yesno: users_signing
+---
 id: Signature County
 question: |
-  Signature County
+  Signature County and Signing Date
 subquestion: |
-  In which county was this form signed?
+  In which county was this form signed, and what is the date of signature?
 fields:
   - "Signature county": signature_address_county
     maxlength: 31
+  - Today's Date: users4_date
+    datatype: date
 ---
 id: True Business Name
 question: |
