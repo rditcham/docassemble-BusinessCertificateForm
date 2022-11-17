@@ -101,6 +101,9 @@ code: |
   emergency[0].name.first
   emergency[0].address.address
   emergency[0].phone_number
+  emergency[1].name.first
+  emergency[1].address.address
+  emergency[1].phone_number
   set_progress(72)
   wbe_yes
   mbe_yes
@@ -377,6 +380,37 @@ subquestion: |
 fields:
   - "Phone Number": emergency[0].phone_number
   - "Email Address": emergency[0].email
+---
+id: Emergency Contact 2 Name
+question: |
+  Emergency Contact 2 Information
+subquestion: |
+  What is the first and last name of the second emergency contact? 
+fields:
+  - "First Name": emergency[1].name.first
+  - "Last Name": emergency[1].name.last
+---
+id: Emergency Contact 2 Address
+question: |
+  Emergency Contact 2 Address
+subquestion: |
+  What is the address for the second emergency contact?
+fields:
+  - "Street Address": emergency[1].address.address
+  - "Apartment": emergency[1].address.unit
+    required: False
+  - "City": emergency[1].address.city
+  - "State": emergency[1].address.state
+  - "Zip Code": emergency[1].address.zip
+---
+id: Emergency Contact 2 Phone Number and Email Address
+question: |
+  Emergency Contact 2 Phone Number and Email Address
+subquestion: |
+  What is the phone number and email address for the second emergency contact?
+fields:
+  - "Phone Number": emergency[1].phone_number
+  - "Email Address": emergency[1].email
 ---
 id: Date of Signature of Person Filling Form Out
 question: |
