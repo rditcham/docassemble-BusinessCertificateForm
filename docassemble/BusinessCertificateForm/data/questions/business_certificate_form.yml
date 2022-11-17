@@ -104,6 +104,11 @@ code: |
   emergency[1].name.first
   emergency[1].address.address
   emergency[1].phone_number
+  third_emergency_contact_yes
+  if third_emergency_contact_yes == True:
+    emergency[2].name.first
+    emergency[2].address.address
+    emergency[2].phone_number
   set_progress(72)
   wbe_yes
   mbe_yes
@@ -121,6 +126,18 @@ code: |
     users[0].signature = ""
     users[1].signature = ""
     users[2].signature = ""
+---
+code: |
+  if third_emergency_contact_yes == False:
+    emergency[2].name.first = ""
+    emergency[2].name.last = ""
+    emergency[2].address.address = ""
+    emergency[2].address.unit = ""
+    emergency[2].address.city = ""
+    emergency[2].address.state = ""
+    emergency[2].address.zip = ""
+    emergency[2].phone_number = ""
+    emergency[2].email = ""
 ---
 ###################### Main order ######################
 comment: |
@@ -411,6 +428,42 @@ subquestion: |
 fields:
   - "Phone Number": emergency[1].phone_number
   - "Email Address": emergency[1].email
+---
+id: Is There a Third Emergency Contact
+question: |
+  Will you be including the contact information for a third Emergency Contact at this time?
+yesno: third_emergency_contact_yes
+---
+id: Emergency Contact 3 Name
+question: |
+  Emergency Contact 3 Information
+subquestion: |
+  What is the first and last name of the third emergency contact? 
+fields:
+  - "First Name": emergency[2].name.first
+  - "Last Name": emergency[2].name.last
+---
+id: Emergency Contact 3 Address
+question: |
+  Emergency Contact 3 Address
+subquestion: |
+  What is the address for the third emergency contact?
+fields:
+  - "Street Address": emergency[2].address.address
+  - "Apartment": emergency[2].address.unit
+    required: False
+  - "City": emergency[2].address.city
+  - "State": emergency[2].address.state
+  - "Zip Code": emergency[2].address.zip
+---
+id: Emergency Contact 3 Phone Number and Email Address
+question: |
+  Emergency Contact 3 Phone Number and Email Address
+subquestion: |
+  What is the phone number and email address for the third emergency contact?
+fields:
+  - "Phone Number": emergency[2].phone_number
+  - "Email Address": emergency[2].email
 ---
 id: Date of Signature of Person Filling Form Out
 question: |
