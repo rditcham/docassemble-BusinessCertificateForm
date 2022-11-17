@@ -114,7 +114,7 @@ code: |
   mbe_yes
   set_progress(81)
   vendor_register
-  newsletter_email
+  newsletter_yes
   interview_order_business_certificate_form = True
 ---
 code: |
@@ -138,6 +138,10 @@ code: |
     emergency[2].address.zip = ""
     emergency[2].phone_number = ""
     emergency[2].email = ""
+---
+code: |
+  if newsletter_yes == False:
+    newsletter_email = ""
 ---
 ###################### Main order ######################
 comment: |
@@ -536,8 +540,10 @@ question: |
 subquestion: |
   Would you like to sign up your business to receive the Economic Development Division Newsletter?
 fields:
-  - "Newsletter email": newsletter_email
+  - "Sign up to receive the newsletter?": newsletter_yes
     datatype: yesnoradio
+  - "Business email": newsletter_email
+    show if: newsletter_yes
 ---
 id: preview business_certificate_form
 question: |
