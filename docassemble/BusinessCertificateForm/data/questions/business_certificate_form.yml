@@ -235,6 +235,19 @@ fields:
   - "Business ZIP Code": business1_address_zip
     maxlength: 5
 ---
+id: Business Physical Location Address
+question: |
+  Address of Business's Physical Location
+subquestion: |
+  What is the address of the business's physical location?
+fields: 
+  - "Street Address": business[0].address.address
+  - "Apartment": business[0].address.unit
+    required: False
+  - "City": business[0].address.city
+  - "State": business[0].address.state
+  - "Zip Code": business[0].address.zip
+---
 id: Business Type
 question: |
   Business Type
