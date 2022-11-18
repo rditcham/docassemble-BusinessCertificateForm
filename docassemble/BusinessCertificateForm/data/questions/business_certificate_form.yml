@@ -89,15 +89,11 @@ code: |
   users[2].name.first
   users[2].address.address
   set_progress(18)
-  users_signing
-  if users_signing == True:
-    users[0].signature
-    users[1].signature
-    users[2].signature
-    signature_date
-    signature_address_county
+  users[0].signature
+  users[1].signature
+  users[2].signature
+  signature_address_county
   set_progress(27)
-  business1_name1
   business1_address_on_one_line
   business1_phone_number
   business1_security_question
@@ -122,14 +118,12 @@ code: |
   interview_order_business_certificate_form = True
 ---
 #code: |
-#  if new_business_yes == False:
-#    business_renewal_yes = True
----
-code: |
-  if users_signing == False:
-    users[0].signature = ""
-    users[1].signature = ""
-    users[2].signature = ""
+#  if users_signing == False:
+#    users[0].signature = ""
+#    users[1].signature = ""
+#    users[2].signature = ""
+#    signature_date = "__/__/____"
+#    signature_address_county = ""
 ---
 code: |
   if third_emergency_contact_yes == False:
@@ -146,6 +140,9 @@ code: |
 code: |
   if newsletter_yes == False:
     newsletter_email = ""
+---
+code: |
+  users4_date = signature_date
 ---
 ###################### Main order ######################
 comment: |
@@ -179,7 +176,7 @@ subquestion: |
   - The address, phone number and email information for your business.
   - Name and contact information for emergency contacts.
 ---
-id: Name of Person Filling Form
+id: Name of Person Filling Form and Date
 question: |
   Name of Person Filling out this Form and Date
 subquestion: |
@@ -189,6 +186,10 @@ fields:
   - "Middle Name": users[3].name.middle
     required: False
   - "Last Name": users[3].name.last
+  - "Date that Form is Being Filled Out": users4_date
+    datatype: date
+    default: |
+          ${ today() }
 ---
 id: New Business
 question: |
@@ -232,7 +233,7 @@ fields:
   - "Business conducted at": business1_conducted_at
     maxlength: 47
   - "Business ZIP Code": business1_address_zip
-    maxlength: 10
+    maxlength: 5
 ---
 id: Business Type
 question: |
@@ -324,10 +325,10 @@ fields:
   - "State": users[2].address.state
   - "Zip Code": users[2].address.zip
 ---
-id: Attesting Individuals Signing Now
-question: |
-  Will all three of the attesting individuals be signing this form right now?
-yesno: users_signing
+#id: Attesting Individuals Signing Now
+#question: |
+#  Will all three of the attesting individuals be signing this form right now?
+#yesno: users_signing
 ---
 id: Signature County
 question: |
@@ -337,17 +338,19 @@ subquestion: |
 fields:
   - "Signature county": signature_address_county
     maxlength: 31
-  - Today's Date: users_date
+  - Date of Signing: signature_date
     datatype: date
+    default: |
+          ${ today() }
 ---
-id: True Business Name
-question: |
-  True Business Name
-subquestion: |
-  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
-fields:
-  - "Business name": business1_name1
-    maxlength: 57
+#id: True Business Name
+#question: |
+#  True Business Name
+#subquestion: |
+#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
+#fields:
+#  - "Business name": business1_name1
+#    maxlength: 57
 ---
 id: Business Address
 question: |
@@ -370,14 +373,14 @@ fields:
     datatype: email
     maxlength: 30
 ---
-id: Business Type
-question: |
-  Business Type
-subquestion: |
-  What type of business is this?
-fields:
-  - "Business type": business1_type2
-    maxlength: 55
+#id: Business Type
+#question: |
+#  Business Type
+#subquestion: |
+#  What type of business is this?
+#fields:
+#  - "Business type": business1_type2
+#    maxlength: 55
 ---
 id: Security Question
 question: |
@@ -486,23 +489,23 @@ fields:
   - "Phone Number": emergency[2].phone_number
   - "Email Address": emergency[2].email
 ---
-id: Date of Signature of Person Filling Form Out
-question: |
-  Date of Signature of Person Filling Form Out
-subquestion: |
-  What is the date that the person filling out this form signed on?
-fields:
-  - "Date of signature": users4_date
-    datatype: date
+#id: Date of Signature of Person Filling Form Out
+#question: |
+#  Date of Signature of Person Filling Form Out
+#subquestion: |
+#  What is the date that the person filling out this form signed on?
+#fields:
+#  - "Date of signature": users4_date
+#    datatype: date
 ---
-id: True Business Name
-question: |
-  True Business Name
-subquestion: |
-  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
-fields:
-  - "Business name": business1_name2
-    maxlength: 62
+#id: True Business Name
+#question: |
+#  True Business Name
+#subquestion: |
+#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
+#fields:
+#  - "Business name": business1_name2
+#    maxlength: 62
 ---
 id: Business Address
 question: |
@@ -515,14 +518,14 @@ fields:
   - "Business address line two": business1_address_line_two
     maxlength: 62
 ---
-id: True Business Name
-question: |
-  True Business Name
-subquestion: |
-  What is the business's True Business Name? (Note: this is different from your business's "Doing Business As" name)
-fields:
-  - "Business name": business1_name3
-    maxlength: 25
+#id: True Business Name
+#question: |
+#  True Business Name
+#subquestion: |
+#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
+#fields:
+#  - "Business name": business1_name3
+#    maxlength: 25
 ---
 id: Women s Business Enterprise
 question: |
@@ -635,10 +638,10 @@ review:
     button: |
       **Signature county**:
       ${ signature_address_county }
-  - Edit: business1_name1
-    button: |
-      **Business name**:
-      ${ business1_name1 }
+#  - Edit: business1_name1
+#    button: |
+#      **Business name**:
+#      ${ business1_name1 }
   - Edit: business1_address_on_one_line
     button: |
       **Business address**:
@@ -651,10 +654,10 @@ review:
     button: |
       **Business email**:
       ${ business1_email }
-  - Edit: business1_type2
-    button: |
-      **Business type**:
-      ${ business1_type2 }
+#  - Edit: business1_type2
+#    button: |
+#      **Business type**:
+#      ${ business1_type2 }
   - Edit: business1_security_question
     button: |
       **Business security question**:
@@ -670,10 +673,10 @@ review:
     button: |
       **Date of signature**:
       ${ users4_date }
-  - Edit: business1_name2
-    button: |
-      **Business name**:
-      ${ business1_name2 }
+#  - Edit: business1_name2
+#    button: |
+#      **Business name**:
+#      ${ business1_name1 }
   - Edit: business1_address_line_one
     button: |
       **Business address line one**:
@@ -682,10 +685,10 @@ review:
     button: |
       **Business address line two**:
       ${ business1_address_line_two }
-  - Edit: business1_name3
-    button: |
-      **Business name**:
-      ${ business1_name3 }
+#  - Edit: business1_name3
+#    button: |
+#      **Business name**:
+#      ${ business1_name1 }
   - Edit: wbe_yes
     button: |
       **Women's business enterprise**:
@@ -815,11 +818,11 @@ attachments:
       - "signature_address_county": ${ signature_address_county }
       - "users2_signature": ${ users[1].signature_if_final(i) }
       - "users3_signature": ${ users[2].signature_if_final(i) }
-      - "business1_name1": ${ business1_name1 }
+      - "business1_name1": ${ business1_dba_name }
       - "business1_address_on_one_line": ${ business1_address_on_one_line }
       - "business1_phone_number": ${ business1_phone_number }
       - "business1_email": ${ business1_email }
-      - "business1_type2": ${ business1_type2 }
+      - "business1_type2": ${ business1_type1 }
       - "business1_security_question": ${ business1_security_question }
       - "emergency1_name_first": ${ emergency[0].name.first }
       - "emergency1_name_last": ${ emergency[0].name.last }
@@ -841,10 +844,10 @@ attachments:
       - "emergency3_email": ${ emergency[2].email }
       - "users4_name_full": ${ users[3] }
       - "users4_date": ${ users4_date.format() }
-      - "business1_name2": ${ business1_name2 }
+      - "business1_name2": ${ business1_dba_name }
       - "business1_address_line_one": ${ business1_address_line_one }
       - "business1_address_line_two": ${ business1_address_line_two }
-      - "business1_name3": ${ business1_name3 }
+      - "business1_name3": ${ business1_dba_name }
       - "wbe_yes": ${ wbe_yes }
       - "mbe_yes": ${ mbe_yes }
       - "vendor_register_yes": ${ vendor_register }
