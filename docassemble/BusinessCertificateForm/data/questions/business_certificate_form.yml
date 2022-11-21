@@ -89,10 +89,12 @@ code: |
   users[2].name.first
   users[2].address.address
   set_progress(18)
-  users[0].signature
-  users[1].signature
-  users[2].signature
-  signature_address_county
+  users_signing
+  if users_signing == True:
+    users[0].signature
+    users[1].signature
+    users[2].signature
+    signature_date
   set_progress(27)
   business1_address_on_one_line
   business1_phone_number
@@ -117,13 +119,13 @@ code: |
   newsletter_yes
   interview_order_business_certificate_form = True
 ---
-#code: |
-#  if users_signing == False:
-#    users[0].signature = ""
-#    users[1].signature = ""
-#    users[2].signature = ""
-#    signature_date = "__/__/____"
-#    signature_address_county = ""
+code: |
+  if users_signing == False:
+    users[0].signature = ""
+    users[1].signature = ""
+    users[2].signature = ""
+    signature_date = str = ""
+    signature_address_county = ""
 ---
 code: |
   if third_emergency_contact_yes == False:
@@ -141,9 +143,6 @@ code: |
   if newsletter_yes == False:
     newsletter_email = ""
 ---
-code: |
-  users4_date = signature_date
----
 ###################### Main order ######################
 comment: |
   This block includes the logic for standalone interviews.
@@ -153,7 +152,6 @@ code: |
   al_intro_screen
   business_certificate_form_intro
   interview_order_business_certificate_form
-  signature_date
   # Store anonymous data for analytics / statistics
   store_variables_snapshot(
       persistent=True,
@@ -338,10 +336,10 @@ fields:
   - "State": users[2].address.state
   - "Zip Code": users[2].address.zip
 ---
-#id: Attesting Individuals Signing Now
-#question: |
-#  Will all three of the attesting individuals be signing this form right now?
-#yesno: users_signing
+id: Attesting Individuals Signing Now
+question: |
+  Will all three of the attesting individuals be signing this form right now?
+yesno: users_signing
 ---
 id: Signature County
 question: |
