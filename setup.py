@@ -54,7 +54,7 @@ setup(name='docassemble.BusinessCertificateForm',
       url='https://courtformsonline.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.ALMassachusetts>=0.1.2', 'docassemble.AssemblyLine>=2.18.0'],
+      install_requires=['docassemble.ALMassachusetts>=0.1.2', 'docassemble.AssemblyLine>=2.19.0'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/BusinessCertificateForm/', package='docassemble.BusinessCertificateForm'),
      )

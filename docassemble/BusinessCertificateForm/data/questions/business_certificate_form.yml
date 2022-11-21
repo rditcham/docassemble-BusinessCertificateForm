@@ -58,6 +58,7 @@ code: |
 objects:
   - emergency: ALPeopleList.using(there_are_any=True)
   - users: ALPeopleList.using(ask_number=True,target_number=1)
+  - business: ALPeopleList.using(there_are_any=True)
 ---
 sections:
   - review_business_certificate_form: Review your answers
@@ -79,8 +80,8 @@ code: |
       exit_or_restart
   business1_dba_name
   business1_type1
-  business1_conducted_at
-  business1_phone_number1
+  business[0].address.address
+  business[0].phone_number
   set_progress(9)
   users[0].name.first
   users[0].address.address
@@ -96,8 +97,6 @@ code: |
     users[2].signature
     signature_date
   set_progress(27)
-  business1_address_on_one_line
-  business1_phone_number
   business1_security_question
   set_progress(36)
   emergency[0].name.first
@@ -138,6 +137,9 @@ code: |
     emergency[2].address.zip = ""
     emergency[2].phone_number = ""
     emergency[2].email = ""
+---
+code: |
+  business1_address_line_two = ""
 ---
 code: |
   if newsletter_yes == False:
@@ -222,17 +224,6 @@ fields:
   - "Business DBA name": business1_dba_name
     maxlength: 45
 ---
-id: Address and ZIP Code
-question: |
-  Address and ZIP Code of Business
-subquestion: |
-  What is the address and ZIP code of the business's physical location?
-fields:
-  - "Business conducted at": business1_conducted_at
-    maxlength: 47
-  - "Business ZIP Code": business1_address_zip
-    maxlength: 5
----
 id: Business Physical Location Address
 question: |
   Address of Business's Physical Location
@@ -255,14 +246,14 @@ fields:
   - "Business type": business1_type1
     maxlength: 24
 ---
-id: Business Phone Number
-question: |
-  Business Phone Number
-subquestion: |
-  What is the phone number for the business?
-fields:
-  - "Business phone number": business1_phone_number1
-    maxlength: 24
+#id: Business Phone Number
+#question: |
+#  Business Phone Number
+#subquestion: |
+#  What is the phone number for the business?
+#fields:
+#  - "Business phone number": business[0].phone_number
+#    maxlength: 24
 ---
 id: First Attesting Individual Name
 question: |
@@ -354,23 +345,14 @@ fields:
     default: |
           ${ today() }
 ---
-#id: True Business Name
+#id: Business Address
 #question: |
-#  True Business Name
+#  Business Address
 #subquestion: |
-#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
+#  What is the address of the business?
 #fields:
-#  - "Business name": business1_name1
-#    maxlength: 57
----
-id: Business Address
-question: |
-  Business Address
-subquestion: |
-  What is the address of the business?
-fields:
-  - "Business address": business1_address_on_one_line
-    maxlength: 58
+#  - "Business address": business1_address_on_one_line
+#    maxlength: 58
 ---
 id: Business Contact Information
 question: |
@@ -378,9 +360,9 @@ question: |
 subquestion: |
   What is the phone number for the business? What is the email address for the business?
 fields:
-  - "Business phone number": business1_phone_number
+  - "Business phone number": business[0].phone_number
     maxlength: 27
-  - "Business email": business1_email
+  - "Business email": business[0].email
     datatype: email
     maxlength: 30
 ---
@@ -518,16 +500,16 @@ fields:
 #  - "Business name": business1_name2
 #    maxlength: 62
 ---
-id: Business Address
-question: |
-  Business Address
-subquestion: |
-  What is the address of the business?
-fields:
-  - "Business address line one": business1_address_line_one
-    maxlength: 62
-  - "Business address line two": business1_address_line_two
-    maxlength: 62
+#id: Business Address
+#question: |
+#  Business Address
+#subquestion: |
+#  What is the address of the business?
+#fields:
+#  - "Business address line one": business1_address_line_one
+#    maxlength: 62
+#  - "Business address line two": business1_address_line_two
+#    maxlength: 62
 ---
 #id: True Business Name
 #question: |
@@ -621,11 +603,11 @@ review:
   - Edit: business1_conducted_at
     button: |
       **Business conducted at**:
-      ${ business1_conducted_at }
+      ${ business[0].address.on_one_line() }
   - Edit: business1_phone_number1
     button: |
       **Business phone number**:
-      ${ business1_phone_number1 }
+      ${ business[0].phone_number }
   - Edit: business1_type1
     button: |
       **Business type**:
@@ -633,7 +615,7 @@ review:
   - Edit: business1_address_zip
     button: |
       **Business zip code**:
-      ${ business1_address_zip }
+      ${ business[0].address.zip }
   - Edit: users.revisit
     button: |
       **Users**
@@ -656,15 +638,15 @@ review:
   - Edit: business1_address_on_one_line
     button: |
       **Business address**:
-      ${ business1_address_on_one_line }
+      ${ business[0].address.on_one_line() }
   - Edit: business1_phone_number
     button: |
       **Business phone number**:
-      ${ business1_phone_number }
+      ${ business[0].phone_number }
   - Edit: business1_email
     button: |
       **Business email**:
-      ${ business1_email }
+      ${ business[0].email }
 #  - Edit: business1_type2
 #    button: |
 #      **Business type**:
@@ -691,7 +673,7 @@ review:
   - Edit: business1_address_line_one
     button: |
       **Business address line one**:
-      ${ business1_address_line_one }
+      ${ business[0].address.on_one_line() }
   - Edit: business1_address_line_two
     button: |
       **Business address line two**:
@@ -814,10 +796,10 @@ attachments:
       - "new_business_yes": ${ new_business_yes }
       - "business_renewal_yes": ${ business_renewal_yes }
       - "business1_dba_name": ${ business1_dba_name }
-      - "business1_conducted_at": ${ business1_conducted_at }
-      - "business1_phone_number1": ${ business1_phone_number1 }
+      - "business1_conducted_at": ${ business[0].address.on_one_line() }
+      - "business1_phone_number1": ${ business[0].phone_number }
       - "business1_type1": ${ business1_type1 }
-      - "business1_address_zip": ${ business1_address_zip }
+      - "business1_address_zip": ${ business[0].address.zip }
       - "users1_address_on_one_line": ${ users[0].address.on_one_line() }
       - "users1_name_full": ${ users[0] }
       - "users2_name_full": ${ users[1] }
@@ -830,9 +812,9 @@ attachments:
       - "users2_signature": ${ users[1].signature_if_final(i) }
       - "users3_signature": ${ users[2].signature_if_final(i) }
       - "business1_name1": ${ business1_dba_name }
-      - "business1_address_on_one_line": ${ business1_address_on_one_line }
-      - "business1_phone_number": ${ business1_phone_number }
-      - "business1_email": ${ business1_email }
+      - "business1_address_on_one_line": ${ business[0].address.on_one_line() }
+      - "business1_phone_number": ${ business[0].phone_number }
+      - "business1_email": ${ business[0].email }
       - "business1_type2": ${ business1_type1 }
       - "business1_security_question": ${ business1_security_question }
       - "emergency1_name_first": ${ emergency[0].name.first }
@@ -856,7 +838,7 @@ attachments:
       - "users4_name_full": ${ users[3] }
       - "users4_date": ${ users4_date.format() }
       - "business1_name2": ${ business1_dba_name }
-      - "business1_address_line_one": ${ business1_address_line_one }
+      - "business1_address_line_one": ${ business[0].address.on_one_line() }
       - "business1_address_line_two": ${ business1_address_line_two }
       - "business1_name3": ${ business1_dba_name }
       - "wbe_yes": ${ wbe_yes }
