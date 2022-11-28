@@ -174,16 +174,21 @@ continue button field: business_certificate_form_intro
 question: |
   File a Business Certificate for the City of Cambridge
 subquestion: |
-  This interview will help you fill out a Business Certificate for the City of Cambridge. Make sure that you have the following information handy:
+  This interview will help you to fill out a Business Certificate for the City of Cambridge. Make sure that you have the following information handy:
+  
   - The name your business will be "Doing Business As."
-  - The address, phone number and email information for your business.
-  - Name and contact information for emergency contacts.
+  
+  - The address for your business's physical location in the City of Cambridge.
+  
+  - The phone number and email address for your business.
+  
+  - The names and addresses of three individuals attesting to the validity of the information being provided on the form.
+  
+  - The names, addresses, phone numbers, and email addresses of at least two emergency contacts.
 ---
 id: Name of Person Filling Form and Date
 question: |
-  Name of Person Filling out this Form and Date
-subquestion: |
-  What is the full name of the person filling out this form and today's date?
+  Enter the name of Person filling out this form and the date that the form is being filled out.
 fields:
   - "First Name": users[3].name.first
   - "Middle Name": users[3].name.middle
@@ -196,16 +201,12 @@ fields:
 ---
 id: New Business
 question: |
-  New Business?
-subquestion: |
-  Are you filing this form to certify a new business?
+  Is this form being filed to certify a new business?
 yesno: new_business_yes
 ---
 id: Business Renewal
 question: |
-  Business Renewal?
-subquestion: |
-  Are you filing this form to renew an existing business?
+  Is this form being filed to renew a business that is already certified?
 yesno: business_renewal_yes
 ---
 id: Exit or Restart
@@ -219,52 +220,53 @@ mandatory: True
 ---
 id: Doing Business As Name
 question: |
-  "Doing Business As" Name
-subquestion: |
-  What name will your business be "Doing Business As?" 
-  (A "Doing Business As" name is a name that businesses can operate under that is different from their true business name.)
+  Enter the business's "Doing Business As" name.
+subquestion: | 
+  For a newly-formed independent business, the "Doing Business As" name will be the same as the the entity's legal business name. If this new business is being certified on behalf of an existing LLC or Corporation, the "Doing Business As" name is a ficticious name that businesses can operate under that is different from the legal name of their parent LLC or corporation.
 fields:
   - "Business DBA name": business1_dba_name
     maxlength: 45
 ---
 id: Business Physical Location Address
 question: |
-  Address of Business's Physical Location
+  Enter the address of the business's physical location.
 subquestion: |
-  What is the address of the business's physical location?
+  If this is a business being certified on behalf of an existing LLC or Corporation, then this is the address of the physical location of the new business in Cambridge, not the address of the LLC's or Corporation's physical location.
 fields: 
   - "Street Address": business[0].address.address
   - "Apartment": business[0].address.unit
     required: False
   - "City": business[0].address.city
+    default: "Cambridge"
   - "State": business[0].address.state
+    default: "MA"
   - "Zip Code": business[0].address.zip
 ---
 id: Business Type
 question: |
-  Business Type
-subquestion: |
   What type of business is this?
+subquestion: |
+  "Type" here means the legal organizational form of the company. (i.e., corporation, partnership, sole proprietorship, limited liability company, etc.)
 fields:
   - "Business type": business1_type1
     maxlength: 24
 ---
 id: First Attesting Individual Name
 question: |
-  First Attesting Individual's Name
+  Enter the name of the first attesting individual.
 subquestion: |
-  You will need three individuals to attest to the accuracy of the information previously given. What is the full name of the first person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+  You will need three individuals to attest to the accuracy of the information previously given. Please include this person's corporate name and title if they are a corporate officer.
 fields:
   - "First Name": users[0].name.first
   - "Middle Name": users[0].name.middle
     required: False
   - "Last Name": users[0].name.last
+  - "Corporate Title (if applicable)": users[0].name.suffix
+    required: False
 ---
 id: First Attesting Individual Address
 question: |
-  First Attesting Individual's Address
-subquestion: |
-  What is the full address of the first attesting individual?
+  Enter the address of the first attesting individual.
 fields:
   - "Street Address": users[0].address.address
   - "Apartment": users[0].address.unit
@@ -275,20 +277,20 @@ fields:
 ---
 id: Second Attesting Individual Name
 question: |
-  Second Attesting Individual's Name
+  Enter the name of the second attesting individual.
 subquestion: |
-  What is the full name of the second person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+  Please include this person's corporate name and title if they are a corporate officer.
 fields:
   - "First Name": users[1].name.first
   - "Middle Name": users[1].name.middle
     required: False
   - "Last Name": users[1].name.last
+  - "Corporate Title (if applicable)": users[1].name.suffix
+    required: False
 ---
 id: Second Attesting Individual Address
 question: |
-  Second Attesting Individual's Address
-subquestion: |
-  What is the full address of the second attesting individual?
+  Enter the address of the second attesting individual.
 fields:
   - "Street Address": users[1].address.address
   - "Apartment": users[1].address.unit
@@ -299,20 +301,20 @@ fields:
 ---
 id: Third Attesting Individual Name
 question: |
-  Third Attesting Individual's Name
+  Enter the name of the third attesting individual.
 subquestion: |
-  What is the full name of the third person signing to declare the information entered accurate? Please include the person's Corporate Name and Title if they are a Corporate Officer.
+  Please include this person's corporate name and title if they are a corporate officer.
 fields:
   - "First Name": users[2].name.first
   - "Middle Name": users[2].name.middle
     required: False
   - "Last Name": users[2].name.last
+  - "Corporate Title (if applicable)": users[2].name.suffix
+    required: False
 ---
 id: Third Attesting Individual Address
 question: |
-  Third Attesting Individual's Address
-subquestion: |
-  What is the full address of the third attesting individual?
+  Enter the address of the third attesting individual.
 fields:
   - "Street Address": users[2].address.address
   - "Apartment": users[2].address.unit
@@ -328,9 +330,7 @@ yesno: users_signing
 ---
 id: Signature County
 question: |
-  Signature County and Signing Date
-subquestion: |
-  In which county was this form signed, and what is the date of signature?
+  Enter the county in which this form was signed by the attesting individuals, and the date on which it was signed.
 fields:
   - "Signature county": signature_address_county
     maxlength: 31
@@ -341,9 +341,7 @@ fields:
 ---
 id: Business Contact Information
 question: |
-  Business Contact Information
-subquestion: |
-  What is the phone number for the business? What is the email address for the business?
+  Enter the phone number and email address of the business filing for certification or renewal.
 fields:
   - "Business phone number": business[0].phone_number
     maxlength: 27
@@ -353,27 +351,25 @@ fields:
 ---
 id: Security Question
 question: |
-  Security Question
-subquestion: |
   What did you want to be when you grew up?
+subquestion: |
+  This is a security question. The answer to this question may be used in future matters related to your business's certification with the City of Cambridge in order to confirm the identity of the person filling out this form.
 fields:
-  - "Business security question": business1_security_question
+  - "Security question": business1_security_question
     maxlength: 26
 ---
 id: Emergency Contact 1 Name
 question: |
-  Emergency Contact 1 Information
+  Enter the name of the first emergency contact. 
 subquestion: |
-  You must include contact information for at least two emergency contacts to be kept confidential in the Emergency Communications Center and only used for notification purposes by the Emergency Communications Department and/or Police or Fire personnel. What is the first and last name of the first emergency contact? 
+  You must include contact information for at least two emergency contacts. This individual's contact information will be kept confidential in the Emergency Communications Center and only used for notification purposes by the Emergency Communications Department and/or Police or Fire personnel.
 fields:
   - "First Name": emergency[0].name.first
   - "Last Name": emergency[0].name.last
 ---
 id: Emergency Contact 1 Address
 question: |
-  Emergency Contact 1 Address
-subquestion: |
-  What is the address for the first emergency contact?
+  Enter the address for the first emergency contact.
 fields:
   - "Street Address": emergency[0].address.address
   - "Apartment": emergency[0].address.unit
@@ -384,27 +380,23 @@ fields:
 ---
 id: Emergency Contact 1 Phone Number and Email Address
 question: |
-  Emergency Contact 1 Phone Number and Email Address
-subquestion: |
-  What is the phone number and email address for the first emergency contact?
+  Enter the phone number and email address for the first emergency contact.
 fields:
   - "Phone Number": emergency[0].phone_number
   - "Email Address": emergency[0].email
 ---
 id: Emergency Contact 2 Name
 question: |
-  Emergency Contact 2 Information
+  Enter the name of the second emergency contact.
 subquestion: |
-  What is the first and last name of the second emergency contact? 
+  This individual's contact information will be kept confidential in the Emergency Communications Center and only used for notification purposes by the Emergency Communications Department and/or Police or Fire personnel. 
 fields:
   - "First Name": emergency[1].name.first
   - "Last Name": emergency[1].name.last
 ---
 id: Emergency Contact 2 Address
 question: |
-  Emergency Contact 2 Address
-subquestion: |
-  What is the address for the second emergency contact?
+  Enter the address for the second emergency contact.
 fields:
   - "Street Address": emergency[1].address.address
   - "Apartment": emergency[1].address.unit
@@ -415,9 +407,7 @@ fields:
 ---
 id: Emergency Contact 2 Phone Number and Email Address
 question: |
-  Emergency Contact 2 Phone Number and Email Address
-subquestion: |
-  What is the phone number and email address for the second emergency contact?
+  Enter the phone number and email address for the second emergency contact.
 fields:
   - "Phone Number": emergency[1].phone_number
   - "Email Address": emergency[1].email
@@ -429,18 +419,16 @@ yesno: third_emergency_contact_yes
 ---
 id: Emergency Contact 3 Name
 question: |
-  Emergency Contact 3 Information
+  Enter the name of the third emergency contact.
 subquestion: |
-  What is the first and last name of the third emergency contact? 
+  This individual's contact information will be kept confidential in the Emergency Communications Center and only used for notification purposes by the Emergency Communications Department and/or Police or Fire personnel.
 fields:
   - "First Name": emergency[2].name.first
   - "Last Name": emergency[2].name.last
 ---
 id: Emergency Contact 3 Address
 question: |
-  Emergency Contact 3 Address
-subquestion: |
-  What is the address for the third emergency contact?
+  Enter the address for the third emergency contact.
 fields:
   - "Street Address": emergency[2].address.address
   - "Apartment": emergency[2].address.unit
@@ -451,45 +439,43 @@ fields:
 ---
 id: Emergency Contact 3 Phone Number and Email Address
 question: |
-  Emergency Contact 3 Phone Number and Email Address
-subquestion: |
-  What is the phone number and email address for the third emergency contact?
+  Enter the phone number and email address for the third emergency contact.
 fields:
   - "Phone Number": emergency[2].phone_number
   - "Email Address": emergency[2].email
 ---
 id: Women s Business Enterprise
 question: |
-  Women's Business Enterprise
-subquestion: |
   Is this business a Women's Business Enterprise?
+subquestion: |
+  A Women's Business Enterprise is a woman-owned business certified by the State Office of Minority and Women Owned Business Assistance (SOMWBA). 
 fields:
   - "Women's business enterprise": wbe_yes
     datatype: yesnoradio
 ---
 id: Minority Business Enterprise
 question: |
-  Minority Business Enterprise
-subquestion: |
   Is this business a Minority Business Enterprise?
+subquestion: |
+  A Minority Business Enterprise is a minority-owned business certified by the State Office of Minority and Women Owned Business Assistance (SOMWBA).
 fields:
   - "Minority business enterprise": mbe_yes
     datatype: yesnoradio
 ---
 id: Register to Become a Vendor
 question: |
-  Register to Become a Vendor
-subquestion: |
   Would you like to register this business as a vendor in the City of Cambridge?
+subquestion: |
+  The Vendor Registry provides an opportunity for local and State Vendors to be notified when the City of Cambridge solicits a bid for the commodity or service that your business offers.
 fields:
   - "Vendor register": vendor_register
     datatype: yesnoradio
 ---
 id: Economic Development Division Newsletter
 question: |
-  Economic Development Division Newsletter
+  Would you like to sign up your business to receive the Economic Opportunity and Development Division Newsletter?
 subquestion: |
-  Would you like to sign up your business to receive the Economic Development Division Newsletter?
+  The Economic Opportunity and Development Division offers businesses owned by historically disadvantaged persons (women, people of color, veterans, disabled individuals, etc.) assistance and information. The newsletter includes information and dates about events, workshops and trainings, marketing opportunities, and guidance for applying for government contracts from the City of Cambridge.
 fields:
   - "Sign up to receive the newsletter?": newsletter_yes
     datatype: yesnoradio
