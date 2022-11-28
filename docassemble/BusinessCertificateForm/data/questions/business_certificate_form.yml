@@ -119,6 +119,9 @@ code: |
   interview_order_business_certificate_form = True
 ---
 code: |
+  other_parties.there_are_any = False
+---
+code: |
   if users_signing == False:
     users[0].signature = ""
     users[1].signature = ""
@@ -187,7 +190,7 @@ fields:
     required: False
   - "Last Name": users[3].name.last
   - "Date that Form is Being Filled Out": users4_date
-    datatype: date
+    datatype: date.format_date('MMM/dd/yyyy')
     default: |
           ${ today() }
 ---
@@ -245,15 +248,6 @@ subquestion: |
 fields:
   - "Business type": business1_type1
     maxlength: 24
----
-#id: Business Phone Number
-#question: |
-#  Business Phone Number
-#subquestion: |
-#  What is the phone number for the business?
-#fields:
-#  - "Business phone number": business[0].phone_number
-#    maxlength: 24
 ---
 id: First Attesting Individual Name
 question: |
@@ -345,15 +339,6 @@ fields:
     default: |
           ${ today() }
 ---
-#id: Business Address
-#question: |
-#  Business Address
-#subquestion: |
-#  What is the address of the business?
-#fields:
-#  - "Business address": business1_address_on_one_line
-#    maxlength: 58
----
 id: Business Contact Information
 question: |
   Business Contact Information
@@ -365,15 +350,6 @@ fields:
   - "Business email": business[0].email
     datatype: email
     maxlength: 30
----
-#id: Business Type
-#question: |
-#  Business Type
-#subquestion: |
-#  What type of business is this?
-#fields:
-#  - "Business type": business1_type2
-#    maxlength: 55
 ---
 id: Security Question
 question: |
@@ -481,44 +457,6 @@ subquestion: |
 fields:
   - "Phone Number": emergency[2].phone_number
   - "Email Address": emergency[2].email
----
-#id: Date of Signature of Person Filling Form Out
-#question: |
-#  Date of Signature of Person Filling Form Out
-#subquestion: |
-#  What is the date that the person filling out this form signed on?
-#fields:
-#  - "Date of signature": users4_date
-#    datatype: date
----
-#id: True Business Name
-#question: |
-#  True Business Name
-#subquestion: |
-#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
-#fields:
-#  - "Business name": business1_name2
-#    maxlength: 62
----
-#id: Business Address
-#question: |
-#  Business Address
-#subquestion: |
-#  What is the address of the business?
-#fields:
-#  - "Business address line one": business1_address_line_one
-#    maxlength: 62
-#  - "Business address line two": business1_address_line_two
-#    maxlength: 62
----
-#id: True Business Name
-#question: |
-#  True Business Name
-#subquestion: |
-#  What is the business's True Business Name? (Note: this is different from your business's "Doing #Business As" name)
-#fields:
-#  - "Business name": business1_name3
-#    maxlength: 25
 ---
 id: Women s Business Enterprise
 question: |
@@ -631,10 +569,6 @@ review:
     button: |
       **Signature county**:
       ${ signature_address_county }
-#  - Edit: business1_name1
-#    button: |
-#      **Business name**:
-#      ${ business1_name1 }
   - Edit: business1_address_on_one_line
     button: |
       **Business address**:
