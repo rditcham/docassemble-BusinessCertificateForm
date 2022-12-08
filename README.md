@@ -14,7 +14,7 @@ The issue that I sought to address with my final project was that of uncomplicat
 
 ### Research
 
-
+As far as currently available options go, there really isn't much. Prospective new business creators have the obvious option of trying to fill out the form themselves which, as I addressed in my Framing section, is a tall order. Additionally, individuals seeking to fill out the City of Cambridge Business Certificate Application could bring the blank form to a law firm or private attorney and pay them for their time and assistance in filling out the form, but this would cost money that indidviduals in such a position might not be willing to spend. Finally, I got in touch with the City of Cambridge Clerk's Office, and they informed me that there some online form-filling assistance programs available to aid individuals in filling out their applications, but once again, these came at a price. That's really it as far as currently available options go, and as you can see, it really isn't much. That's why I hope to offer a free solution that bridges the gap between the user not having to pay to file the form and being able to receive some assistance in doing so.
 
 ### Ideation and Prototyping
 
