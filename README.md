@@ -38,7 +38,7 @@ I feel that my form will have a very significant impact for those individuals tr
 
 ### Fitness and Completeness
 
-
+I feel that, aside from the small issues such as the second date printing, the duplicate ZIP code, and the lack of filling the SSN (as a result of not wanting to deal with confidential personal information), I feel that the form produces a very viable and complete output. Every single field is filled out and signatures can be given or elected not to be given, I have incuded a number of conditional screens and questions, and I tried to account for every conceivable use case. I even included an exit/restart screen for if someone selected that they were neither filing for a New Business Certification nor a Business Renewal Certification. I feel that every single potential user will be able to make use of this interview to fill out their form, and feel without a shadow of a doubt that the interview is a great improvement over the status quo in nearly all conceivable use cases.
 
 ### Documentation
 
