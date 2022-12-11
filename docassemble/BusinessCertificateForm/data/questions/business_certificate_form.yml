@@ -73,6 +73,7 @@ code: |
   nav.set_section("review_business_certificate_form")
   user_role = "na"
   users[3].name.first
+  # These nested if statements take care of the New Business or Business Renewal question issue
   new_business_yes
   if new_business_yes == False:
     business_renewal_yes
@@ -91,6 +92,7 @@ code: |
   users[2].address.address
   set_progress(18)
   users_signing
+  # This only brings up the signature questions if the user confirms that the attesting individuals will be signing today
   if users_signing == True:
     users[0].signature
     users[1].signature
@@ -106,6 +108,7 @@ code: |
   emergency[1].address.address
   emergency[1].phone_number
   third_emergency_contact_yes
+  # This only brings up the questions for the third emergency contact if the user confirms that there is a third emergency contact present on the form
   if third_emergency_contact_yes == True:
     emergency[2].name.first
     emergency[2].address.address
@@ -118,9 +121,11 @@ code: |
   newsletter_yes
   interview_order_business_certificate_form = True
 ---
+# I added this code to prevent the "Are there any parties on the other side of this matter" question from appearing since there will never be a part on the other side
 code: |
   other_parties.there_are_any = False
 ---
+# I added this code to leave the signature fields and the signature date and county fields on the form blank when the attesting individuals would not be signing
 code: |
   if users_signing == False:
     users[0].signature = ""
@@ -129,6 +134,7 @@ code: |
     signature_date = str = ""
     signature_address_county = ""
 ---
+# I added this code to leave all of the third emergency contact fields blank when the user confirmed that there was no third emergency contact
 code: |
   if third_emergency_contact_yes == False:
     emergency[2].name.first = ""
@@ -141,9 +147,11 @@ code: |
     emergency[2].phone_number = ""
     emergency[2].email = ""
 ---
+# I have added this code to leave the second line of the Business Address field blank so that I could print the business[0].address_on_one_line() on the top line cleanly
 code: |
   business1_address_line_two = ""
 ---
+# I have added this code to leave the newsletter_email field blank if the user confirms that they do not want to receive the EDD Newsletter
 code: |
   if newsletter_yes == False:
     newsletter_email = ""
@@ -185,7 +193,12 @@ subquestion: |
   - The names and addresses of three individuals attesting to the validity of the information being provided on the form.
   
   - The names, addresses, phone numbers, and email addresses of at least two emergency contacts.
+  
+  It is important to note that the Business Certificate for the City of Cambridge will want either your Social Security number or your Federal ID number before filing, and this interview WILL NOT ask you a question regarding either of these numbers. Instead, you will need to fill out this confidential personal information yourself after the completed form has been generated for you.
+  
+  Additionally, this interview cannot yet e-file your form for you as a result of your needing to hand-write in confidential personal information. Once the completed form has been generated for you, you will need to print it out, write in the previously-mentioned confidential personal information, and bring the form to the City of Cambridge Clerk's Office to file it.
 ---
+# This question collects the name information for the person filling out the form, and the date on which the interview is being completed/the form is being filled out
 id: Name of Person Filling Form and Date
 question: |
   Enter the name of Person filling out this form and the date that the form is being filled out.
@@ -195,20 +208,22 @@ fields:
     required: False
   - "Last Name": users[3].name.last
   - "Date that Form is Being Filled Out": users4_date
-    datatype: date.format_date('MMM/dd/yyyy')
     default: |
           ${ today() }
 ---
+# This question asks whether the form is being filed to certify a new business
 id: New Business
 question: |
   Is this form being filed to certify a new business?
 yesno: new_business_yes
 ---
+# This question asks whether the form is being filed to renew an existing business certification
 id: Business Renewal
 question: |
   Is this form being filed to renew a business that is already certified?
 yesno: business_renewal_yes
 ---
+# This is the exit or restart screen that will be displayed if a user selects 'No' for both New Business and Business Renewal
 id: Exit or Restart
 question: |
   You must be filing either to certify a new business or to renew an existing business certification.
@@ -218,6 +233,7 @@ buttons:
   - Restart: restart
 mandatory: True
 ---
+# This question asks what name the business seeking to be certified will be "Doing Business As," and provides some additional information about what exactly a DBA Name is and how it might differ depending on your legal business entity
 id: Doing Business As Name
 question: |
   Enter the business's "Doing Business As" name.
@@ -227,11 +243,12 @@ fields:
   - "Business DBA name": business1_dba_name
     maxlength: 45
 ---
+# This question asks the user for the physical location address of the business seeking to be certified, and provides some information how it might differ depending on your legal business entity
 id: Business Physical Location Address
 question: |
-  Enter the address of the business's physical location.
+  Enter the address of the business's physical location in the City of Cambridge.
 subquestion: |
-  If this is a business being certified on behalf of an existing LLC or Corporation, then this is the address of the physical location of the new business in Cambridge, not the address of the LLC's or Corporation's physical location.
+  If this is a business being certified on behalf of an existing LLC or Corporation, then this is the address of the physical location of the new business in Cambridge, not the address of the LLC or Corporation's physical location. If this is a newly-formed business, then this is simply the business's physical location in the City of Cambridge.
 fields: 
   - "Street Address": business[0].address.address
   - "Apartment": business[0].address.unit
@@ -242,6 +259,7 @@ fields:
     default: "MA"
   - "Zip Code": business[0].address.zip
 ---
+# This question asks for the type of business of the business seeking to be certified, and provides some information for how it refers your legal business entity and not something like 'Cookie Retailer'
 id: Business Type
 question: |
   What type of business is this?
@@ -251,6 +269,7 @@ fields:
   - "Business type": business1_type1
     maxlength: 24
 ---
+# This question asks for the name information for the first individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form, while also giving a warning once again that you will need three individuals to attest to the information's accuracy
 id: First Attesting Individual Name
 question: |
   Enter the name of the first attesting individual.
@@ -264,6 +283,7 @@ fields:
   - "Corporate Title (if applicable)": users[0].name.suffix
     required: False
 ---
+# This question asks for the address information for the first individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form
 id: First Attesting Individual Address
 question: |
   Enter the address of the first attesting individual.
@@ -275,6 +295,7 @@ fields:
   - "State": users[0].address.state
   - "Zip Code": users[0].address.zip
 ---
+# This question asks for the name information for the second individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form
 id: Second Attesting Individual Name
 question: |
   Enter the name of the second attesting individual.
@@ -288,6 +309,7 @@ fields:
   - "Corporate Title (if applicable)": users[1].name.suffix
     required: False
 ---
+# This question asks for the address information for the second individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form
 id: Second Attesting Individual Address
 question: |
   Enter the address of the second attesting individual.
@@ -299,6 +321,7 @@ fields:
   - "State": users[1].address.state
   - "Zip Code": users[1].address.zip
 ---
+# This question asks for the name information for the first individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form
 id: Third Attesting Individual Name
 question: |
   Enter the name of the third attesting individual.
@@ -312,6 +335,7 @@ fields:
   - "Corporate Title (if applicable)": users[2].name.suffix
     required: False
 ---
+# This question asks for the address information for the second individual attesting to the legitimacy and accuracy of the information being provided in the interview and on the form
 id: Third Attesting Individual Address
 question: |
   Enter the address of the third attesting individual.
@@ -323,11 +347,13 @@ fields:
   - "State": users[2].address.state
   - "Zip Code": users[2].address.zip
 ---
+# This question asks whether ALL THREE of the attesting indviduals will be signing right now, for the purpose of determining whether or not to display the signature fields or to allow the attesting individuals to sign on the printed form at a later date
 id: Attesting Individuals Signing Now
 question: |
   Will all three of the attesting individuals be signing this form right now?
 yesno: users_signing
 ---
+# If the attesting individuals are signing right now, then this question will ask for the signature county and the date of signing (today's date)
 id: Signature County
 question: |
   Enter the county in which this form was signed by the attesting individuals, and the date on which it was signed.
@@ -339,6 +365,7 @@ fields:
     default: |
           ${ today() }
 ---
+# This question asks for the phone number and email address associated with the business
 id: Business Contact Information
 question: |
   Enter the phone number and email address of the business filing for certification or renewal.
@@ -349,6 +376,7 @@ fields:
     datatype: email
     maxlength: 30
 ---
+# This question asks a security question that can be used by the City of Cambridge's Clerk's Office for future matters related to business certification to confirm the identity of the user filling out this interview, or the identity of anyone dealing with such matters on behalf of the individual filling out this interview
 id: Security Question
 question: |
   What did you want to be when you grew up?
@@ -358,6 +386,7 @@ fields:
   - "Security question": business1_security_question
     maxlength: 26
 ---
+# This question asks for the name information for the first emergency contact and provides a disclaimer once again that you need at least two emergency contacts on the form, and explaining what the contact information will be used for and where it will be kept
 id: Emergency Contact 1 Name
 question: |
   Enter the name of the first emergency contact. 
@@ -367,6 +396,7 @@ fields:
   - "First Name": emergency[0].name.first
   - "Last Name": emergency[0].name.last
 ---
+# This question asks for the address information for the first emergency contact
 id: Emergency Contact 1 Address
 question: |
   Enter the address for the first emergency contact.
@@ -378,6 +408,7 @@ fields:
   - "State": emergency[0].address.state
   - "Zip Code": emergency[0].address.zip
 ---
+# This question asks for the phone number and email address information for the first emergency contact
 id: Emergency Contact 1 Phone Number and Email Address
 question: |
   Enter the phone number and email address for the first emergency contact.
@@ -385,6 +416,7 @@ fields:
   - "Phone Number": emergency[0].phone_number
   - "Email Address": emergency[0].email
 ---
+# This question asks for the name information for the second emergency contact and provides a disclaimer explaining what the contact information will be used for and where it will be kept
 id: Emergency Contact 2 Name
 question: |
   Enter the name of the second emergency contact.
@@ -394,6 +426,7 @@ fields:
   - "First Name": emergency[1].name.first
   - "Last Name": emergency[1].name.last
 ---
+# This question asks for the address information for the second emergency contact
 id: Emergency Contact 2 Address
 question: |
   Enter the address for the second emergency contact.
@@ -405,6 +438,7 @@ fields:
   - "State": emergency[1].address.state
   - "Zip Code": emergency[1].address.zip
 ---
+# This question asks for the phone number and email address information for the second emergency contact
 id: Emergency Contact 2 Phone Number and Email Address
 question: |
   Enter the phone number and email address for the second emergency contact.
@@ -412,11 +446,13 @@ fields:
   - "Phone Number": emergency[1].phone_number
   - "Email Address": emergency[1].email
 ---
+# This question asks if there is a third emergency contact present on the form for the purpose of determining whether or not to ask the questions regarding emergency contact 3's name, address, phone number and email information
 id: Is There a Third Emergency Contact
 question: |
   Will you be including the contact information for a third Emergency Contact at this time?
 yesno: third_emergency_contact_yes
 ---
+# This question asks for the name information for the third emergency contact and provides a disclaimer explaining what the contact information will be used for and where it will be kept
 id: Emergency Contact 3 Name
 question: |
   Enter the name of the third emergency contact.
@@ -426,6 +462,7 @@ fields:
   - "First Name": emergency[2].name.first
   - "Last Name": emergency[2].name.last
 ---
+# This question asks for the address information for the third emergency contact
 id: Emergency Contact 3 Address
 question: |
   Enter the address for the third emergency contact.
@@ -437,6 +474,7 @@ fields:
   - "State": emergency[2].address.state
   - "Zip Code": emergency[2].address.zip
 ---
+# This question asks for the phone number and email address information for the second emergency contact
 id: Emergency Contact 3 Phone Number and Email Address
 question: |
   Enter the phone number and email address for the third emergency contact.
@@ -444,6 +482,7 @@ fields:
   - "Phone Number": emergency[2].phone_number
   - "Email Address": emergency[2].email
 ---
+# This question asks whether this is a Women's Business Enterprise (WBE) and provides a definition of what a WBE is
 id: Women s Business Enterprise
 question: |
   Is this business a Women's Business Enterprise?
@@ -453,6 +492,7 @@ fields:
   - "Women's business enterprise": wbe_yes
     datatype: yesnoradio
 ---
+# This question asks whether this is a Minority Business Enterprise (MBE) and provides a definition of what a MBE is
 id: Minority Business Enterprise
 question: |
   Is this business a Minority Business Enterprise?
@@ -462,6 +502,7 @@ fields:
   - "Minority business enterprise": mbe_yes
     datatype: yesnoradio
 ---
+# This question asks whether the user wants to register the business seeking certification with the city of Cambridge's vendor registry and explains the benefit of doing so
 id: Register to Become a Vendor
 question: |
   Would you like to register this business as a vendor in the City of Cambridge?
@@ -471,6 +512,7 @@ fields:
   - "Vendor register": vendor_register
     datatype: yesnoradio
 ---
+# This question asks the user whether they would like to sign up their business to receive a newsletter from the Economic Opportunity and Development Division and explains the benefit of doing so
 id: Economic Development Division Newsletter
 question: |
   Would you like to sign up your business to receive the Economic Opportunity and Development Division Newsletter?
