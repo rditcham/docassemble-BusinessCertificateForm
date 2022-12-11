@@ -2,9 +2,7 @@
 
 A short written description of the project's development, structured so as to address each enumerated category on the Final Project Rubric.
 
-## Author
-
-Ryan Ditcham
+## Author - Ryan Ditcham
 
 ## Body
 
