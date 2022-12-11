@@ -34,7 +34,7 @@ As far as complexity and robustness goes, I unfortunately was not able to make u
 
 ### Impact and Efficiencies
 
-
+I feel that my form will have a very significant impact for those individuals trying to fill out a City of Cambridge Business Certificate Application form. It will cut down the time that it takes to get the form filled out and ready to file by well over 50%. With my clear instructions, the ease of use of my form, the and the fully-filled out product that is presented to users at the end of the interview, users will be able to cut out any excess confusion and focus only on providing the exact answers and information that is required. Additionally, the interview helps to prepare users for the questions that are coming by letting them know that they'll need to have their own information handy as well as information for the three attesting individuals who will be signing the form, and the minimum two emergency contacts that are required for the form as well. All of these factors should contribute to cutting down difficulty and time consumption by a minimum of 50%. I had hoped to work on the Next Steps document for my users as well to inform them that they need to provide their SSN themselves and to help instruct them as to how to go about filing the form, but unfortunately I ran out of time to be able to implement these features. I would say that the Next Steps document is probably the highest priority for someone seeking to continue work on this interview after I hand it over to the LIT Lab.
 
 ### Fitness and Completeness
 
