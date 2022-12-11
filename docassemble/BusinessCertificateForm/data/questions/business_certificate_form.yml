@@ -83,14 +83,12 @@ code: |
   business1_type1
   business[0].address.address
   business[0].phone_number
-  set_progress(9)
   users[0].name.first
   users[0].address.address
   users[1].name.first
   users[1].address.address
   users[2].name.first
   users[2].address.address
-  set_progress(18)
   users_signing
   # This only brings up the signature questions if the user confirms that the attesting individuals will be signing today
   if users_signing == True:
@@ -98,9 +96,7 @@ code: |
     users[1].signature
     users[2].signature
     signature_date
-  set_progress(27)
   business1_security_question
-  set_progress(36)
   emergency[0].name.first
   emergency[0].address.address
   emergency[0].phone_number
@@ -113,10 +109,8 @@ code: |
     emergency[2].name.first
     emergency[2].address.address
     emergency[2].phone_number
-  set_progress(72)
   wbe_yes
   mbe_yes
-  set_progress(81)
   vendor_register
   newsletter_yes
   interview_order_business_certificate_form = True
@@ -208,6 +202,7 @@ fields:
     required: False
   - "Last Name": users[3].name.last
   - "Date that Form is Being Filled Out": users4_date
+    datatype: date
     default: |
           ${ today() }
 ---
@@ -566,22 +561,22 @@ review:
     button: |
       **Business DBA name**:
       ${ business1_dba_name }
-  - Edit: business1_conducted_at
+  - Edit: business[0].address.address
     button: |
       **Business conducted at**:
       ${ business[0].address.on_one_line() }
-  - Edit: business1_phone_number1
+  - Edit: business[0].phone_number
     button: |
       **Business phone number**:
       ${ business[0].phone_number }
+  - Edit: business[0].email
+    button: |
+      **Business email**:
+      ${ business[0].email }
   - Edit: business1_type1
     button: |
       **Business type**:
       ${ business1_type1 }
-  - Edit: business1_address_zip
-    button: |
-      **Business zip code**:
-      ${ business[0].address.zip }
   - Edit: users.revisit
     button: |
       **Users**
@@ -589,34 +584,6 @@ review:
       % for item in users:
         * ${ item }
       % endfor
-  - Edit: signature_date
-    button: |
-      **Date of signature**:
-      ${ signature_date }
-  - Edit: signature_address_county
-    button: |
-      **Signature county**:
-      ${ signature_address_county }
-  - Edit: business1_address_on_one_line
-    button: |
-      **Business address**:
-      ${ business[0].address.on_one_line() }
-  - Edit: business1_phone_number
-    button: |
-      **Business phone number**:
-      ${ business[0].phone_number }
-  - Edit: business1_email
-    button: |
-      **Business email**:
-      ${ business[0].email }
-#  - Edit: business1_type2
-#    button: |
-#      **Business type**:
-#      ${ business1_type2 }
-  - Edit: business1_security_question
-    button: |
-      **Business security question**:
-      ${ business1_security_question }
   - Edit: emergency.revisit
     button: |
       **Emergency**
@@ -624,26 +591,26 @@ review:
       % for item in emergency:
         * ${ item }
       % endfor
+  - Edit: signature_date
+    button: |
+      **Date of attesting individual signature**:
+      ${ signature_date }
+  - Edit: signature_address_county
+    button: |
+      **Attesting individual signature county**:
+      ${ signature_address_county }
+  - Edit: business1_security_question
+    button: |
+      **Security question**:
+      ${ business1_security_question }
   - Edit: users4_date
     button: |
-      **Date of signature**:
+      **Date of signature of person filling out this interview**:
       ${ users4_date }
-#  - Edit: business1_name2
-#    button: |
-#      **Business name**:
-#      ${ business1_name1 }
-  - Edit: business1_address_line_one
-    button: |
-      **Business address line one**:
-      ${ business[0].address.on_one_line() }
   - Edit: business1_address_line_two
     button: |
       **Business address line two**:
       ${ business1_address_line_two }
-#  - Edit: business1_name3
-#    button: |
-#      **Business name**:
-#      ${ business1_name1 }
   - Edit: wbe_yes
     button: |
       **Women's business enterprise**:
@@ -687,7 +654,7 @@ confirm: True
 ---
 continue button field: emergency.revisit
 question: |
-  Edit emergency
+  Edit emergency contacts
 subquestion: |
   ${ emergency.table }
 
