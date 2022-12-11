@@ -46,7 +46,8 @@ As far as documentation goes, I feel that I included more than enough documentat
 
 ### Real World Viability
 
-
+I feel that my interview is extremely close to being ready for real-world use as is. Aside from the very small issues that I mentioned regarding the date field not fitting and the duplicate ZIP code printing (neither of which should invalidate the form and both of which can hopefully be changed by a more skilled coder very easily), the form comes fully filled out and signed and has all the necessary supporting documentation aside form the Next Steps document to go into circulation amongst the other LIT Lab interviews. I would say that my interview is one, maybe two days of work away from use in the real-world.
 
 ### Sustainability
 
+I don't anticipate there being many if any updates to the form or the Business Certification process in the City of Cambridge in the foreseeable future, and so I think that my interview should satisfy the needs of users in this space for at least the next five to ten years, if not longer. There could certainly be some further upgrades made to it, such as integration and links to various websites like the City of Cambridge Clerk's Office website, the Economic Development Division, etc., but that isn't within the scope of the minimum viable product for this final project. Additionally, based on my prior work with the Suffolk LIT Lab, I would hope that at some point in the future this form could be fully e-filed directly to the relevant and appropriate court. However, I'm not sure what the best way to overcome the personal information issue is with the user's SSN, but I'm very confident that the LIT Lab would be able to find a secure way to implement such a question. As far as maintenance for the form goes, I'm not sure that any would truly be necessary aside from the standard maintenance that is conducted on the DocAssemble server and documentation itself.
